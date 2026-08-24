@@ -2,7 +2,13 @@ name: Build Release Artifact
 
 on:
   workflow_call:
-  
+    inputs:
+      debug_session:
+        description: 'Start an interactive SSH debug session'
+        type: boolean
+        required: false
+        default: false
+
 env:
   APK_PATH: app/build/outputs/apk/release/app-release.apk
 
@@ -29,6 +35,12 @@ jobs:
 
       - name: Setup Android SDK 🚀
         uses: android-actions/setup-android@v3
+
+      - name: Start SSH Debug Session 🐛
+        if: ${{ inputs.debug_session }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
 
       - name: Build Release APK (Attempt 1) 💻
         run: |
