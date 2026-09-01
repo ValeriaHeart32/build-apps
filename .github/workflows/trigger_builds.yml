@@ -2,12 +2,21 @@ name: Trigger Doki builds
 
 on:
   workflow_dispatch:
+    inputs:
+      debug_session:
+        description: 'Start an interactive SSH session (tmate)'
+        type: boolean
+        default: false
 
 jobs:
   build_release:
     name: Trigger Release builds 🚀
     uses: ./.github/workflows/build_release.yml
+    with:
+      debug_session: ${{ inputs.debug_session }}
 
   build_legacy:
     name: Trigger Legacy builds 🚀
     uses: ./.github/workflows/build_legacy.yml
+    with:
+      debug_session: ${{ inputs.debug_session }}
