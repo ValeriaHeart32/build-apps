@@ -2,6 +2,12 @@ name: Build Legacy Artifact
 
 on:
   workflow_call:
+    inputs:
+      debug_session:
+        description: 'Start tmate session for debugging'
+        type: boolean
+        required: false
+        default: false
 
 env:
   APK_PATH: app/build/outputs/apk/legacy/app-legacy.apk
@@ -29,6 +35,12 @@ jobs:
 
       - name: Setup Android SDK 🚀
         uses: android-actions/setup-android@v3
+
+      - name: Setup tmate session 🚀
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.debug_session }}
+        with:
+          limit-access-to-actor: true
 
       - name: Build Legacy APK (Attempt 1) 💻
         run: |
